@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Ticket Booking System</title>
+    <link rel="stylesheet" href="css/homepage.css" />
+    <link rel="icon" href="Images/playstore.png" />
+  </head>
+  <body>
+    <div class="Div1">
+      <header id="fr_header" class="fr_class"></header>
+      <img src="Images/playstore.png" class="otb_logo" alt="OTB" />
+      <div class="discription">
+        <h3>Ticketly</h3>
+        <h3 id="tagLine">Save Paper, Save Nature</h3>
+      </div>
+      <!-- <img
+        src="Images/msrtc_logo.png"
+        class="otb_Maha_mandal"
+        alt="MSRTC_LOGO"
+      /> -->
+      <button
+        type="button"
+        id="butTon"
+        class="btn btn-outline-danger"
+        style="width: 80px"
+      >
+        Sign out
+      </button>
+    </div>
+    <!------------------------------------------------------------------->
+    <div id="Form_div" class="frm">
+      <form action="" method="post" class="Div_class">
+        <div class="fr">
+          <input
+            type="text"
+            name="from"
+            id="from"
+            placeholder="Source"
+            class="db"
+            list="datalist1"
+            required
+          />
+          <datalist id="datalist1">
+            <option value="Islampur"></option>
+            <option value="Court"></option>
+            <option value="RIT"></option>
+            <option value="Borgaon"></option>
+            <option value="Takari"></option>
+          </datalist>
+        </div>
+        <div class="too">
+          <input
+            type="text "
+            id="to"
+            class="db"
+            name="to"
+            placeholder="Destination"
+            list="datalist2"
+            required
+          />
+          <datalist id="datalist2">
+            <option value="Islampur"></option>
+            <option value="Court"></option>
+            <option value="RIT"></option>
+            <option value="Borgaon"></option>
+            <option value="Takari"></option>
+          </datalist>
+        </div>
+        <div class="adults">
+          <input
+            type="text"
+            id="adult"
+            class="db"
+            name="Adults"
+            placeholder="No.of Adult"
+            required
+          />
+        </div>
+        <div class="children">
+          <input
+            type="text"
+            id="child"
+            class="db"
+            name="children"
+            placeholder="No.of children"
+            required
+          />
+        </div>
+      </form>
+      <div class="buy">
+        <button
+          class="btn_buy"
+          id="proceedPayment"
+          onclick="payMent();calCulate()"
+        >
+          Calculate
+        </button>
+      <!-- </div>
+      <div id="map"><h1></h1></div>
+
+      <div id="map"></div>
+      <div id="output"></div>
+    </div> -->
+
+    <!------------------------------------------------------------------------->
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+      import {
+        getDatabase,
+        set,
+        ref,
+      } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
+      import {
+        getAuth,
+        sendPasswordResetEmail,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyD4JWnfpZ4Y9soq0TjGo_JDSkmkEtTyZKw",
+        authDomain: "ticketly-511bc.firebaseapp.com",
+        databaseURL: "https://ticketly-511bc-default-rtdb.firebaseio.com",
+        projectId: "ticketly-511bc",
+        storageBucket: "ticketly-511bc.appspot.com",
+        messagingSenderId: "276578051920",
+        appId: "1:276578051920:web:8d694ef1e1c5b4ed1eae55",
+        measurementId: "G-8XZNCS5N6J",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const database = getDatabase(app);
+      const auth = getAuth();
+      butTon.addEventListener("click", (e) => {
+        signOut(auth)
+          .then(() => {
+            // Sign-out successful.
+            location.replace("index.html");
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      });
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script src="javascript/ticktley.js"></script>
+  </body>
+</html>
