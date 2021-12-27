@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+
+    <!-- <meta name="google-signin-scope" content="profile email" />
+    <meta
+      name="google-signin-client_id"
+      content="1092308465475-d88hupv6qcokan4k9v0atck1ilp68hid.apps.googleusercontent.com"
+    /> -->
+
+    <title>Login page- Online ticket booking</title>
+    <meta
+      name="google-signin-client_id"
+      content="946714996710-43vevr4hslnf1n75hdaaocfkne9b7m5n.apps.googleusercontent.com"
+    />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase.js"></script> -->
+    <link rel="stylesheet" href="css/style1.css" />
+    <link rel="icon" href="Images/playstore.png" />
+  </head>
+
+  <body>
+    <div class="ticket">
+      <div class="form-box">
+        <div class="button-box">
+          <div id="btn"></div>
+          <button type="button" class="toggle-btn" onclick="loginnn()">
+            Log In
+          </button>
+          <button type="button" class="toggle-btn" onclick="register()">
+            Register
+          </button>
+        </div>
+
+        <form id="login" class="input">
+          <input
+            type="text"
+            id="email"
+            class="input-field"
+            placeholder="User Id"
+            required
+          />
+          <input
+            type="password"
+            id="pass"
+            class="input-field"
+            placeholder="Enter Password"
+            required
+          />
+          <span id="forget" class="forgetstyle">forgot password ?</span>
+          <button
+            type="submit"
+            id="logIn"
+            class="submit-btn"
+            name="login"
+            value="login up"
+          >
+            Log IN
+          </button>
+        </form>
+        <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+        <!-- <h3>--- &nbsp OR &nbsp---</h3> -->
+        <form id="register" class="input">
+          <div class="log">
+            <input
+              type="text"
+              class="input-field"
+              id="userName"
+              placeholder="Full Name"
+              name="username"
+              required
+            />
+            <input
+              type="text"
+              class="input-field"
+              id="mobIle"
+              placeholder="Mobile No"
+              name="mobile"
+              required
+            />
+            <input
+              type="email"
+              class="input-field"
+              id="emailId"
+              placeholder="Email Id"
+              name="email"
+              required
+            />
+            <input
+              type="password"
+              class="input-field passsword"
+              id="passWord"
+              placeholder="Enter Password"
+              name="password"
+              required
+            />
+
+            <button
+              type="submit"
+              id="signUp"
+              class="submit-btn"
+              name="signin"
+              value="sign up"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ----------------------------------------------------------FIREBASE------------------------------------------------------------------------- -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+      import {
+        getDatabase,
+        set,
+        ref,
+      } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
+      import {
+        getAuth,
+        sendPasswordResetEmail,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyD4JWnfpZ4Y9soq0TjGo_JDSkmkEtTyZKw",
+        authDomain: "ticketly-511bc.firebaseapp.com",
+        databaseURL: "https://ticketly-511bc-default-rtdb.firebaseio.com",
+        projectId: "ticketly-511bc",
+        storageBucket: "ticketly-511bc.appspot.com",
+        messagingSenderId: "276578051920",
+        appId: "1:276578051920:web:8d694ef1e1c5b4ed1eae55",
+        measurementId: "G-8XZNCS5N6J",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const database = getDatabase(app);
+      const auth = getAuth();
+
+      signUp.addEventListener("click", (e) => {
+        var email = document.getElementById("emailId").value;
+        var password = document.getElementById("passWord").value;
+        var username = document.getElementById("userName").value;
+        var mobile = document.getElementById("mobIle").value;
+
+        createUserWithEmailAndPassword(auth, email, password, mobile)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            set(ref(database, "user/" + user.uid), {
+              username: username,
+              email: email,
+              password: password,
+              mobile: mobile,
+            });
+            location.replace("aftersignin.html");
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage);
+            // ..
+          });
+      });
+
+      logIn.addEventListener("click", (e) => {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("pass").value;
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            location.replace("aftersignin.html");
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage);
+          });
+      });
+
+      forget.addEventListener("click", (e) => {
+        var email = document.getElementById("email").value;
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            // Password reset email sent!
+            // ..
+            alert("Reset mail sent!");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorMessage);
+            // ..
+          });
+      });
+    </script>
+    <script src="javascript/script1.js"></script>
+  </body>
+</html>
